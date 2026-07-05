@@ -43355,10 +43355,10 @@ if (isBackgroundKeepAliveEnabled) {
             const splashContainer = document.getElementById('splash');
             if (splashContainer) splashContainer.classList.add('fade-out');
 
-            // 2. 【修改】获取用户上次填写的激活码，并检查它是否在当前的有效列表里
-            // 2. 【修改】获取用户上次填写的激活码，并检查它是否在当前的有效列表里
+            // 2. 获取用户上次填写的激活码，并检查它是否在当前的有效列表里
             const userStoredCode = localStorage.getItem('jrsy_activation_record');
-            const isActivated = true; // <--- 只需要把这一行改成 true 即可
+            // 如果本地缓存的码存在于最新的有效码列表中，则视为已激活
+            const isActivated = GLOBAL_VALID_CODES.includes(userStoredCode);
 
             setTimeout(() => {
                 // 3. 彻底隐藏加载层
