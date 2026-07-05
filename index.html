@@ -43355,9 +43355,8 @@ if (isBackgroundKeepAliveEnabled) {
             const splashContainer = document.getElementById('splash');
             if (splashContainer) splashContainer.classList.add('fade-out');
 
-            // 2. 获取用户上次填写的激活码，并检查它是否在当前的有效列表里
-            const userStoredCode = localStorage.getItem('jrsy_activation_record');
-            // 如果本地缓存的码存在于最新的有效码列表中，则视为已激活
+            // 2. 获取新的缓存记录。因为加了_v2，所有老用户都会因为找不到记录而必须重新输入
+            const userStoredCode = localStorage.getItem('jrsy_activation_record_v2');
             const isActivated = GLOBAL_VALID_CODES.includes(userStoredCode);
 
             setTimeout(() => {
@@ -59788,8 +59787,8 @@ function initActivationLogic() {
             if (GLOBAL_VALID_CODES.includes(code)) {
                 // === 验证成功 ===
                 
-                // 【修改】保存具体的激活码，而不是简单的 true
-                localStorage.setItem('jrsy_activation_record', code);
+                // 【修改】验证通过后，将码存入新的位置
+                localStorage.setItem('jrsy_activation_record_v2', code);
 
                 activationOverlay.style.transition = 'opacity 0.5s ease';
                 activationOverlay.style.opacity = '0';
