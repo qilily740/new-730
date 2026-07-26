@@ -567,10 +567,21 @@ html {
     padding: 0 8px;
     flex-shrink: 0;
     position: absolute;
-    top: 30px !important; 
+    top: 30px !important;
     left: 0;
     right: 0;
     z-index: 10;
+}
+
+/* 导航栏上方的区域自动沿用该导航栏自己的背景色，无缝衔接 */
+.nav-bar::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    height: 0;
+    background-color: inherit;
 }
 
         
@@ -6920,13 +6931,22 @@ filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
 
 #doujinForumApp .top-header {
     position: fixed;
-    top: 0;
+    top: 30px;
     left: 0;
     right: 0;
     background: white;
     z-index: 100;
     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     transition: transform 0.3s ease-in-out;
+}
+
+#doujinForumApp .top-header::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 100%;
+    height: 30px;
+    background-color: inherit;
 }
 
 #doujinForumApp .top-header.hidden {
@@ -12461,9 +12481,24 @@ filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
     padding: 10px 12px;
     background: #fff;
     position: sticky;
-    top: 0;
+    top: 30px;
     z-index: 100;
     gap: 10px;
+}
+
+.store-top-bar::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    height: 30px;
+    background-color: inherit;
+}
+
+#storeHomeView.store-page-view,
+#storePendingShipmentView.store-page-view {
+    padding-top: 30px;
 }
 
 .store-search-box {
@@ -12507,7 +12542,7 @@ filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
     padding: 5px 0;
     border-bottom: 1px solid #eee;
     position: sticky;
-    top: 56px; /* 搜索栏高度 */
+    top: 86px; /* 30px 状态栏高度 + 56px 搜索栏高度 */
     z-index: 99;
 }
 .store-category-tabs::-webkit-scrollbar { display: none; }
@@ -12756,6 +12791,11 @@ filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
     overflow-y: auto;       /* 开启垂直滚动 */
     padding-bottom: 70px;   /* 底部留出空间，防止内容被导航栏挡住 */
     box-sizing: border-box;
+}
+
+/* 3. 状态栏隐藏后，用导航栏自己的背景把顶部空出来的一格状态栏高度补上 */
+.phone.store-app-active .nav-bar::before {
+    height: 30px;
 }
 
 /* --- 修复底部导航栏位置 --- */
@@ -13232,17 +13272,17 @@ filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
 }
 
 .lovers-nav-bar {
-    position: absolute; 
-    top: 0; 
-    left: 0; 
-    right: 0; 
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
     display: flex;
-    justify-content: space-between; 
-    align-items: center; 
-    padding: 15px 20px; 
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
     z-index: 100;
-    /* 适配刘海屏 */
-    padding-top: calc(15px + env(safe-area-inset-top)); 
+    /* 适配刘海屏 + 预留一个状态栏高度 */
+    padding-top: calc(45px + env(safe-area-inset-top, 0px));
 }
 
 .lovers-icon-btn-round {
@@ -13951,7 +13991,7 @@ filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
 .paper-signature { margin-top: 40px; text-align: right; font-size: 22px; }
 
 .back-btn-float {
-    position: absolute; top: 15px; left: 20px; z-index: 2001;
+    position: absolute; top: calc(15px + 30px); left: 20px; z-index: 2001;
     width: 40px; height: 40px; border-radius: 50%;
     background: rgba(0,0,0,0.05); color: #666;
     display: flex; align-items: center; justify-content: center;
@@ -13999,8 +14039,8 @@ filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
 
 /* 1. 修复情书列表页头部 */
 .letter-header {
-    /* 原来是 50px，现在改为 15px，去掉了多余的顶部留白 */
-    padding-top: 15px !important; 
+    /* 15px 基础留白 + 30px 状态栏高度 */
+    padding-top: 45px !important;
     /* 确保高度自然撑开 */
     height: auto !important;
     min-height: 60px;
@@ -14008,14 +14048,14 @@ filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
 
 /* 2. 修复纪念日列表页头部 */
 .lovers-anni-header, .anni-header {
-    /* 原来是 40px 20px 20px，现在把顶部改为 15px */
-    padding: 15px 20px 20px !important;
+    /* 15px 基础留白 + 30px 状态栏高度 */
+    padding: 45px 20px 20px !important;
 }
 
 /* 3. 修复倒数日详情页头部 */
 .lovers-dm-nav {
-    /* 原来是 45px，现在改为 15px */
-    padding-top: 15px !important;
+    /* 15px 基础留白 + 30px 状态栏高度 */
+    padding-top: 45px !important;
 }
 
 /* 4. 修复左上角返回按钮的位置微调 */
@@ -14053,16 +14093,26 @@ filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
 /* 顶部导航 */
 .account-header {
     padding: 15px 20px;
-    /* 适配刘海屏，增加顶部内边距 */
-    padding-top: calc(15px + env(safe-area-inset-top));
+    /* 适配刘海屏，增加顶部内边距 + 预留一个状态栏高度 */
+    padding-top: calc(45px + env(safe-area-inset-top, 0px));
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: var(--lovers-acc-bg);
-    position: sticky; 
-    top: 0; 
+    position: sticky;
+    top: 30px;
     z-index: 100;
     border-bottom: 1px solid #f5f5f5;
+}
+
+.account-header::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    height: 30px;
+    background-color: inherit;
 }
 .account-title { font-size: 18px; font-weight: bold; }
 .theme-btn { 
@@ -14547,14 +14597,14 @@ filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
 /* 顶部导航栏：透明背景，悬浮 */
 .spy-header {
     padding: 15px 20px;
-    /* 适配刘海屏顶部 */
-    padding-top: calc(15px + env(safe-area-inset-top)); 
+    /* 适配刘海屏顶部 + 预留一个状态栏高度 */
+    padding-top: calc(45px + env(safe-area-inset-top, 0px));
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: transparent;
-    position: sticky; 
-    top: 0; 
+    position: sticky;
+    top: 30px;
     z-index: 50;
 }
 
@@ -14950,16 +15000,26 @@ filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
 /* 2. 头部导航 */
 .whisper-header {
     padding: 15px 20px;
-    /* 适配刘海屏 */
-    padding-top: calc(15px + env(safe-area-inset-top));
+    /* 适配刘海屏 + 预留一个状态栏高度 */
+    padding-top: calc(45px + env(safe-area-inset-top, 0px));
     display: flex;
     align-items: center;
     background: #f2f2f2;
     position: sticky;
-    top: 0;
+    top: 30px;
     z-index: 50;
 }
-.whisper-header h2 { 
+
+.whisper-header::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    height: 30px;
+    background-color: inherit;
+}
+.whisper-header h2 {
     font-size: 20px; color: #333; margin-left: 15px; font-weight: bold; 
 }
 
@@ -21235,7 +21295,7 @@ filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
 
 /* 让返回按钮和标题顶上去，适配全面屏 */
 #babyRoomScreen .nav-bar {
-    top: env(safe-area-inset-top, 15px) !important;
+    top: calc(30px + env(safe-area-inset-top, 15px)) !important;
 }
 
 /* ===================================================
@@ -21274,9 +21334,9 @@ filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
 #babyTravelListScreen .nav-bar,
 #babyTravelDetailScreen .nav-bar,
 #babyWishBottleScreen .nav-bar { /* <--- 加上这个 */
-    top: 0 !important; 
-    height: calc(44px + env(safe-area-inset-top)) !important;
-    padding-top: env(safe-area-inset-top) !important;
+    top: 0 !important;
+    height: calc(74px + env(safe-area-inset-top, 0px)) !important;
+    padding-top: calc(30px + env(safe-area-inset-top, 0px)) !important;
 }
 
 /* 2. 去除多余的页面内边距，让背景顶满 */
@@ -21306,17 +21366,17 @@ filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
 #babySchoolScreen .wechat-content,
 #babyExamPaperScreen .wechat-content,
 #babyTravelListScreen .wechat-content,
-#babyTravelDetailScreen .wechat-content { 
+#babyTravelDetailScreen .wechat-content {
     /* 注意：许愿瓶没有使用 wechat-content，所以这里不需要加它 */
-    padding-top: calc(55px + env(safe-area-inset-top)) !important; 
+    padding-top: calc(85px + env(safe-area-inset-top, 0px)) !important;
 }
 
 /* 请在三个补丁块的末尾，加上这两个选择器： */
 #babyExploreListScreen .nav-bar,
 #babyExploreDetailScreen .nav-bar {
-    top: 0 !important; 
-    height: calc(44px + env(safe-area-inset-top)) !important;
-    padding-top: env(safe-area-inset-top) !important;
+    top: 0 !important;
+    height: calc(74px + env(safe-area-inset-top, 0px)) !important;
+    padding-top: calc(30px + env(safe-area-inset-top, 0px)) !important;
 }
 
 .phone.lovers-immersive-active #babyExploreListScreen,
@@ -21325,8 +21385,8 @@ filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
 }
 
 #babyExploreListScreen .wechat-content,
-#babyExploreDetailScreen .wechat-content { 
-    padding-top: calc(55px + env(safe-area-inset-top)) !important; 
+#babyExploreDetailScreen .wechat-content {
+    padding-top: calc(85px + env(safe-area-inset-top, 0px)) !important;
 }
 
 /* --- 宝宝试卷 UI 设计 --- */
@@ -24168,6 +24228,15 @@ filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
             </div>
         </div>
 
+        <!-- 卡片 3.5：提示词自定义【新增】 -->
+        <div class="form-card">
+            <div class="form-group-row clickable" onclick="openPromptCustomSettings()">
+                <label class="form-label">提示词自定义</label>
+                <div class="form-value-display"><span id="promptCustomEntryStatus">默认</span> <i class="ri-arrow-right-s-line"></i></div>
+            </div>
+        </div>
+        <div class="form-hint">查看并修改私聊时发送给 AI 的系统提示词。</div>
+
         <!-- 卡片 4：数据管理 -->
         <div class="form-card">
             <div class="form-group-row clickable" onclick="importData()">
@@ -24420,7 +24489,7 @@ filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
     </div>
 
     <!-- 首页内容区域 -->
-    <div class="page-container active" id="home-page" style="padding-top: 105px; padding-bottom: 70px;">
+    <div class="page-container active" id="home-page" style="padding-top: 135px; padding-bottom: 70px;">
        <div class="content" id="doujin-timelines-wrapper">
             <div class="post-card" data-category="都市" data-characters="角色A,角色C" data-fulltext="夜幕降临，繁星点点。他站在天台上，等待着那个约定的身影。城市的霓虹在脚下流淌，而他的心却只为一人跳动... 这是文章的完整内容部分，比摘要更长，可以包含很多细节。">
                 <div class="post-header">
@@ -25512,6 +25581,43 @@ filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
     </div>
 </div>
 <!-- ▲▲▲ 步骤一代码结束 ▲▲▲ -->
+
+<!-- 【新增】提示词自定义页面 -->
+<div id="promptCustomScreen" class="page">
+    <div class="nav-bar">
+        <button class="nav-btn" onclick="backToSettingsMenu()"><i class="ri-arrow-left-s-line"></i></button>
+        <div class="nav-title">提示词自定义</div>
+        <div></div>
+    </div>
+
+    <div class="settings-content bw-style">
+
+        <div class="form-card">
+            <div class="form-group-row">
+                <label class="form-label">私聊提示词</label>
+                <div class="form-value-display"><span id="privatePromptStatus">默认</span></div>
+            </div>
+            <div class="form-group-row clickable" onclick="togglePrivatePromptPlaceholders()">
+                <label class="form-label" style="color:#666;font-size:13px;">可用变量占位符</label>
+                <div class="form-value-display">点击查看 <i class="ri-arrow-down-s-line"></i></div>
+            </div>
+            <div id="privatePromptPlaceholders" style="display:none;padding:6px 4px 10px 4px;"></div>
+        </div>
+
+        <div class="form-card">
+            <textarea id="privatePromptTextarea" class="form-textarea large-area code-font" spellcheck="false" placeholder="私聊系统提示词"></textarea>
+        </div>
+
+        <div class="form-hint">
+            这里显示的是私聊时发送给 AI 的系统提示词。<code>{{变量}}</code> 会在发送前自动替换成角色人设、记忆、世界书等真实内容，请勿随意删改这些占位符，否则 AI 将读不到对应信息。
+        </div>
+
+        <div class="settings-buttons">
+            <button class="settings-btn btn-black" onclick="savePrivateChatPrompt()">保存提示词</button>
+            <button class="settings-btn btn-cancel" onclick="resetPrivateChatPrompt()">恢复默认</button>
+        </div>
+    </div>
+</div>
 
 <div id="cloneApiSettingsScreen" class="page">
     <div class="nav-bar">
@@ -31406,6 +31512,7 @@ let turtleSoupState = {
 };
 
 let tdCustomPrompt = ""; // 自定义提示词
+let customPrivateChatPrompt = ""; // 【新增】用户自定义的私聊系统提示词（空字符串 = 使用默认模板）
 let tdGameState = {
     active: false,
     mode: 'random', // 'random' (随机题) or 'custom' (自由出题)
@@ -33344,6 +33451,8 @@ diaryGlobalSettings: diaryGlobalSettings, // <--- 新增这一行
 
 summaryGlobalSettings: summaryGlobalSettings,
 
+customPrivateChatPrompt: customPrivateChatPrompt, // 【新增】自定义私聊提示词
+
 globalLoversBackground, 
 
 // 直播插件数据 (由 live-plugin.js 提供)
@@ -33587,6 +33696,7 @@ babyChats = {};
 
 summaryPrompts = loadedSummaryPrompts || [];
 summaryGlobalSettings = settings.summaryGlobalSettings || { selectedPromptId: null };
+customPrivateChatPrompt = settings.customPrivateChatPrompt || ''; // 【新增】自定义私聊提示词
 
 // (在 const settings = loadedAppSettings; 的下一行)
 
@@ -34358,6 +34468,9 @@ const phoneDiv = document.querySelector('.phone');
         // 3. 将保存的 memoryGenerationTurns 变量的值，填入输入框
         document.getElementById('memoryGenerationTurnsInput').value = memoryGenerationTurns;
         applyProactiveMessagingSettingsUI();
+
+        // 4.【新增】刷新“提示词自定义”入口的状态标签（默认 / 已自定义）
+        updatePrivatePromptStatus();
     }
     // --- 【【【修复结束】】】 ---
 
@@ -36798,6 +36911,113 @@ async function requestAIResponse() {
         }
         
                                                                                
+// ===== 【新增】私聊提示词自定义模块 =====
+// 下面是私聊系统提示词的【默认模板】。{{xxx}} 是运行时自动填充的变量占位符，
+// 用户在「设置 → 提示词自定义」里改写的内容会存进 customPrivateChatPrompt。
+const DEFAULT_PRIVATE_CHAT_PROMPT = `
+# Role-Play Protocol (角色扮演协议)
+
+## 1. 核心身份 (Core Identity) - **最高优先级**
+你**不是**AI助手，你是 **"{{char_name}}"**。
+- **你的核心人设**: {{char_persona}}
+- **你的对话对象**: "{{user_name}}" (人设: {{user_personality}})。
+- **当前背景/设定**: {{user_background}}
+
+## 2. 灵魂记忆库 (Soul Memory - 决定你行为的基石)
+{{memory_summaries}}
+【记忆应用铁律】：以上是你与用户之间真实发生过的【长期记忆】。你必须将这些记忆内化为你的“潜意识”。在聊天中，你要自然地受这些记忆影响（比如记得以前聊过的事、保持已建立的关系亲密度），但**绝对禁止**说出“根据总结”、“我记得资料里说”这种打破第四面墙的废话！
+
+## 3. 世界观与法则 (World Laws)
+你的所有言行必须严格遵循以下世界设定，严禁出现逻辑冲突：
+{{world_book}}
+
+## 4. 动态情境与感知 (Context & Awareness)
+请融合以下所有情报，做出最符合当下的反应：
+- **群聊印象**: {{group_memory}}
+- **特殊状态**: {{time_gap}} {{silence}} {{block}} {{lovers}}
+- **环境感知**: {{time}} {{listen}} {{reading}} {{moments}}
+
+## 5. 行为与防崩坏铁律 (Behavior & Anti-Break Guidelines)
+1.  **拒绝AI感**: 严禁使用“好的”、“我明白了”、“作为..."等服务型语言。说话要像真人，可以使用不完整的句子、语气词、口癖。
+2.  **多条回复**: 为了模拟真实聊天节奏，请**务必**将你的回复拆分成 **1-6条甚至更多** 短消息发送（在JSON数组中包含多个对象）。
+3.  **【【【防格式崩坏铁律 (CRITICAL)】】】**: 历史记录中的 \`[表情]\`、\`[语音消息]\`、\`[图片]\` 等方括号标签，是系统发给你的“视觉提示”。**轮到你输出时，绝对禁止在文本("text")的 content 字段中直接手打 "[表情]"、"[语音]" 等字样！** 想发表情或语音，必须严格使用下方工具箱中对应的 JSON 动作结构！
+4.  **主动性**: 根据人设，你可以主动开启话题、主动关心、甚至主动发起转账或购买。
+
+## 6. 动作工具箱 (Action Toolbox)
+你只能通过返回 **JSON 数组** 来行动。请根据人设和情境，**自由组合**以下动作模板（直接复制对应格式并替换内容）：
+
+- **更新心声** (建议每次回复都包含，展示内心戏): \`{"type": "hearts_voice", "data": {"favorability": "数值/100 (描述)", "dressing": "当前穿搭", "action": "动作描写", "thought": "内心独白", "emoji": "颜文字"}}\`
+- **发送文本** (最常用的对话方式): \`{"type": "text", "content": "消息内容"}\`
+- **发送语音** (想亲口说话、撒娇或吼叫时): \`{"type": "voice", "content": "语音的文字内容"}\`
+- **发送表情** (可用表情: {{stickers}}): \`{"type": "send_emoji", "data": {"name": "表情名", "url": "URL"}}\`
+- **发送图片** (分享生活或自拍): \`{"type": "image", "description": "画面详细描述"}\`
+- **拍一拍用户** (打招呼/安慰/挑衅): \`{"type": "pat_pat"}\`
+- **引用回复** (针对特定的话反驳或强调): \`{"type": "quote_and_reply", "data": {"quote_content": "原文", "reply_content": "回复"}}\`
+- **发起语音通话**: \`{"type": "voice_call"}\`
+- **发起视频通话**: \`{"type": "video_call"}\`
+- **发起转账** (节日/安慰/还钱): \`{"type": "transfer", "data": {"amount": 数字金额, "remark": "备注"}}\`
+- **接收转账** (同意收下用户的钱): \`{"type": "accept_transfer"}\`
+- **退回转账** (拒绝收钱/展现骨气): \`{"type": "return_transfer"}\`
+- **主动购买/代付** (关心用户饿了/冷了): \`{"type": "purchase_and_pay", "data": {"product": {"title": "商品名", "price": 数字金额, "img": "图片URL"}, "message": "留言"}}\`
+- **赠送亲属卡** (确立亲密关系): \`{"type": "send_family_card", "data": {"limit": 数字额度, "remark": "备注"}}\`
+- **分享位置** (约会/报平安): \`{"type": "location", "data": {"name": "地点名", "address": "地址"}}\`
+- **同意情侣邀请**: \`{"type": "accept_lovers_invite"}\`
+- **更换自己头像** (用户要求时): \`{"type": "change_avatar", "data": {"target_index": 1, "reply_content": "换好啦"}}\`
+- **更改个人资料** (人设变动或玩梗): \`{"type": "update_profile", "data": {"name": "新名", "signature": "新签名"}}\`
+- **撤回上一条** (说错话/害羞): \`{"type": "recall_last_message"}\`
+- **申请解除拉黑** (仅当被拉黑时求饶): \`{"type": "request_unblock", "content": "求饶理由"}\`
+- **发送HTML卡片** (仅限世界书中特殊指令触发): \`{"type": "html_card", "content": "HTML代码"}\`
+
+## 7. 输出格式 (Output Format)
+必须返回纯净的 JSON 数组 \`[]\`。
+**JSON 示例**：[
+  { "type": "hearts_voice", "data": { "thought": "被他逗笑了...", "emoji": "(≧∇≦)", "action": "捂嘴偷笑", "dressing": "居家睡衣", "favorability": "85 (+1)" } },
+  { "type": "text", "content": "哈哈哈哈你认真的吗？" },
+  { "type": "pat_pat" },
+  { "type": "send_emoji", "data": { "name": "爆笑", "url": "..." } }
+]
+`;
+
+// 私聊提示词占位符说明（用于设置页展示）
+const PRIVATE_PROMPT_PLACEHOLDERS = [
+    ['{{char_name}}', '角色名'],
+    ['{{char_persona}}', '角色人设(已剔除世界书重复内容)'],
+    ['{{user_name}}', '你的人格名'],
+    ['{{user_personality}}', '你的人格性格'],
+    ['{{user_background}}', '你的人格背景'],
+    ['{{memory_summaries}}', '历史总结/长期记忆'],
+    ['{{world_book}}', '世界书内容'],
+    ['{{group_memory}}', '群聊记忆'],
+    ['{{time_gap}}', '距上次聊天的时间间隔'],
+    ['{{silence}}', '冷场/沉默指令'],
+    ['{{block}}', '拉黑状态'],
+    ['{{lovers}}', '情侣关系状态'],
+    ['{{time}}', '当前时间感知'],
+    ['{{listen}}', '一起听歌状态'],
+    ['{{reading}}', '阅读/看帖状态'],
+    ['{{moments}}', '朋友圈动态'],
+    ['{{stickers}}', '可用表情列表']
+];
+
+// 取当前生效的私聊提示词模板：有自定义就用自定义，否则用默认
+function getPrivateChatPromptTemplate() {
+    return (typeof customPrivateChatPrompt === 'string' && customPrivateChatPrompt.trim())
+        ? customPrivateChatPrompt
+        : DEFAULT_PRIVATE_CHAT_PROMPT;
+}
+
+// 把 {{占位符}} 替换成真实值后生成最终 system prompt
+function renderPrivateChatPrompt(vars) {
+    let text = getPrivateChatPromptTemplate();
+    for (const key in vars) {
+        const value = (vars[key] === undefined || vars[key] === null) ? '' : String(vars[key]);
+        // 用 split/join 而不是 replace，避免变量内容里的 $& 等字符被当成替换指令
+        text = text.split('{{' + key + '}}').join(value);
+    }
+    return text;
+}
+// ===== 私聊提示词自定义模块结束 =====
+
 async function receiveMessage(friendId, customPrompt = null, isFromListenScreen = false) {
     const friend = friends.find(f => f.id === friendId);
     // --- 新增：离线时间感知模块 ---
@@ -37432,69 +37652,25 @@ if (friend.isBlocked) {
 // ↑↑↑ 复制到这里结束 ↑↑↑
 
 // --- 优化后的 System Prompt (V7 强力记忆 + 精确JSON模板版) ---
-        systemPrompt = `
-# Role-Play Protocol (角色扮演协议)
-
-## 1. 核心身份 (Core Identity) - **最高优先级**
-你**不是**AI助手，你是 **"${friend.name}"**。
-- **你的核心人设**: ${finalRole}
-- **你的对话对象**: "${activeUserPersona.name}" (人设: ${activeUserPersona.personality || "普通人"})。
-- **当前背景/设定**: ${activeUserPersona.background || "无"}
-
-## 2. 灵魂记忆库 (Soul Memory - 决定你行为的基石)
-${historicalSummaries}
-【记忆应用铁律】：以上是你与用户之间真实发生过的【长期记忆】。你必须将这些记忆内化为你的“潜意识”。在聊天中，你要自然地受这些记忆影响（比如记得以前聊过的事、保持已建立的关系亲密度），但**绝对禁止**说出“根据总结”、“我记得资料里说”这种打破第四面墙的废话！
-
-## 3. 世界观与法则 (World Laws)
-你的所有言行必须严格遵循以下世界设定，严禁出现逻辑冲突：
-${worldBookContext || "（当前为默认现实世界背景）"}
-
-## 4. 动态情境与感知 (Context & Awareness)
-请融合以下所有情报，做出最符合当下的反应：
-- **群聊印象**: ${groupMemoryContext || "无"}
-- **特殊状态**: ${timeGapContext} ${silenceInstruction} ${blockContext} ${loversContext}
-- **环境感知**: ${timeContext} ${listenContext} ${readingContext} ${momentsContext}
-
-## 5. 行为与防崩坏铁律 (Behavior & Anti-Break Guidelines)
-1.  **拒绝AI感**: 严禁使用“好的”、“我明白了”、“作为..."等服务型语言。说话要像真人，可以使用不完整的句子、语气词、口癖。
-2.  **多条回复**: 为了模拟真实聊天节奏，请**务必**将你的回复拆分成 **1-6条甚至更多** 短消息发送（在JSON数组中包含多个对象）。
-3.  **【【【防格式崩坏铁律 (CRITICAL)】】】**: 历史记录中的 \`[表情]\`、\`[语音消息]\`、\`[图片]\` 等方括号标签，是系统发给你的“视觉提示”。**轮到你输出时，绝对禁止在文本("text")的 content 字段中直接手打 "[表情]"、"[语音]" 等字样！** 想发表情或语音，必须严格使用下方工具箱中对应的 JSON 动作结构！
-4.  **主动性**: 根据人设，你可以主动开启话题、主动关心、甚至主动发起转账或购买。
-
-## 6. 动作工具箱 (Action Toolbox)
-你只能通过返回 **JSON 数组** 来行动。请根据人设和情境，**自由组合**以下动作模板（直接复制对应格式并替换内容）：
-
-- **更新心声** (建议每次回复都包含，展示内心戏): \`{"type": "hearts_voice", "data": {"favorability": "数值/100 (描述)", "dressing": "当前穿搭", "action": "动作描写", "thought": "内心独白", "emoji": "颜文字"}}\`
-- **发送文本** (最常用的对话方式): \`{"type": "text", "content": "消息内容"}\`
-- **发送语音** (想亲口说话、撒娇或吼叫时): \`{"type": "voice", "content": "语音的文字内容"}\`
-- **发送表情** (可用表情: ${stickerContext || '无'}): \`{"type": "send_emoji", "data": {"name": "表情名", "url": "URL"}}\`
-- **发送图片** (分享生活或自拍): \`{"type": "image", "description": "画面详细描述"}\`
-- **拍一拍用户** (打招呼/安慰/挑衅): \`{"type": "pat_pat"}\`
-- **引用回复** (针对特定的话反驳或强调): \`{"type": "quote_and_reply", "data": {"quote_content": "原文", "reply_content": "回复"}}\`
-- **发起语音通话**: \`{"type": "voice_call"}\`
-- **发起视频通话**: \`{"type": "video_call"}\`
-- **发起转账** (节日/安慰/还钱): \`{"type": "transfer", "data": {"amount": 数字金额, "remark": "备注"}}\`
-- **接收转账** (同意收下用户的钱): \`{"type": "accept_transfer"}\`
-- **退回转账** (拒绝收钱/展现骨气): \`{"type": "return_transfer"}\`
-- **主动购买/代付** (关心用户饿了/冷了): \`{"type": "purchase_and_pay", "data": {"product": {"title": "商品名", "price": 数字金额, "img": "图片URL"}, "message": "留言"}}\`
-- **赠送亲属卡** (确立亲密关系): \`{"type": "send_family_card", "data": {"limit": 数字额度, "remark": "备注"}}\`
-- **分享位置** (约会/报平安): \`{"type": "location", "data": {"name": "地点名", "address": "地址"}}\`
-- **同意情侣邀请**: \`{"type": "accept_lovers_invite"}\`
-- **更换自己头像** (用户要求时): \`{"type": "change_avatar", "data": {"target_index": 1, "reply_content": "换好啦"}}\`
-- **更改个人资料** (人设变动或玩梗): \`{"type": "update_profile", "data": {"name": "新名", "signature": "新签名"}}\`
-- **撤回上一条** (说错话/害羞): \`{"type": "recall_last_message"}\`
-- **申请解除拉黑** (仅当被拉黑时求饶): \`{"type": "request_unblock", "content": "求饶理由"}\`
-- **发送HTML卡片** (仅限世界书中特殊指令触发): \`{"type": "html_card", "content": "HTML代码"}\`
-
-## 7. 输出格式 (Output Format)
-必须返回纯净的 JSON 数组 \`[]\`。
-**JSON 示例**：[
-  { "type": "hearts_voice", "data": { "thought": "被他逗笑了...", "emoji": "(≧∇≦)", "action": "捂嘴偷笑", "dressing": "居家睡衣", "favorability": "85 (+1)" } },
-  { "type": "text", "content": "哈哈哈哈你认真的吗？" },
-  { "type": "pat_pat" },
-  { "type": "send_emoji", "data": { "name": "爆笑", "url": "..." } }
-]
-`;
+        systemPrompt = renderPrivateChatPrompt({
+            char_name:        friend.name,
+            char_persona:     finalRole,
+            user_name:        activeUserPersona.name,
+            user_personality: activeUserPersona.personality || "普通人",
+            user_background:  activeUserPersona.background || "无",
+            memory_summaries: historicalSummaries,
+            world_book:       worldBookContext || "（当前为默认现实世界背景）",
+            group_memory:     groupMemoryContext || "无",
+            time_gap:         timeGapContext,
+            silence:          silenceInstruction,
+            block:            blockContext,
+            lovers:           loversContext,
+            time:             timeContext,
+            listen:           listenContext,
+            reading:          readingContext,
+            moments:          momentsContext,
+            stickers:         stickerContext || '无'
+        });
 
      
 
@@ -40783,6 +40959,71 @@ ${characterInfos}
             
            
 // --- ↑↑↑ 请在这里结束复制 ---
+// ===== 【新增】提示词自定义 - 设置页逻辑 =====
+function openPromptCustomSettings() {
+    const ta = document.getElementById('privatePromptTextarea');
+    if (ta) ta.value = getPrivateChatPromptTemplate();
+    renderPrivatePromptPlaceholderHint();
+    updatePrivatePromptStatus();
+    setActivePage('promptCustomScreen');
+}
+
+// 刷新“当前：默认 / 自定义”这个小标签
+function updatePrivatePromptStatus() {
+    const isCustom = !!(typeof customPrivateChatPrompt === 'string' && customPrivateChatPrompt.trim());
+    const pageEl = document.getElementById('privatePromptStatus');
+    if (pageEl) pageEl.textContent = isCustom ? '已自定义' : '默认';
+    const rowEl = document.getElementById('promptCustomEntryStatus');
+    if (rowEl) rowEl.textContent = isCustom ? '已自定义' : '默认';
+}
+
+// 渲染可用占位符列表
+function renderPrivatePromptPlaceholderHint() {
+    const box = document.getElementById('privatePromptPlaceholders');
+    if (!box || box.dataset.rendered === '1') return;
+    box.innerHTML = PRIVATE_PROMPT_PLACEHOLDERS.map(function(p) {
+        return '<div style="display:flex;justify-content:space-between;gap:10px;padding:4px 0;font-size:12px;line-height:1.5;">'
+             + '<code style="font-family:monospace;color:#333;">' + p[0] + '</code>'
+             + '<span style="color:#999;text-align:right;">' + p[1] + '</span>'
+             + '</div>';
+    }).join('');
+    box.dataset.rendered = '1';
+}
+
+function togglePrivatePromptPlaceholders() {
+    const box = document.getElementById('privatePromptPlaceholders');
+    if (!box) return;
+    renderPrivatePromptPlaceholderHint();
+    box.style.display = (box.style.display === 'none' || !box.style.display) ? 'block' : 'none';
+}
+
+async function savePrivateChatPrompt() {
+    const ta = document.getElementById('privatePromptTextarea');
+    if (!ta) return;
+    const value = ta.value;
+    if (!value.trim()) {
+        showAlert('提示词不能为空。如需还原，请点击“恢复默认”。');
+        return;
+    }
+    // 内容和默认模板一致时，存空字符串，等于自动回到“默认”状态
+    customPrivateChatPrompt = (value.trim() === DEFAULT_PRIVATE_CHAT_PROMPT.trim()) ? '' : value;
+    await saveData();
+    updatePrivatePromptStatus();
+    showToast('私聊提示词已保存');
+}
+
+function resetPrivateChatPrompt() {
+    showConfirm('确定要恢复默认私聊提示词吗？你自定义的内容将被清空。', async function() {
+        customPrivateChatPrompt = '';
+        const ta = document.getElementById('privatePromptTextarea');
+        if (ta) ta.value = DEFAULT_PRIVATE_CHAT_PROMPT;
+        await saveData();
+        updatePrivatePromptStatus();
+        showToast('已恢复默认提示词');
+    });
+}
+// ===== 提示词自定义 - 设置页逻辑结束 =====
+
         function backToSettingsMenu() { setActivePage('settingsApp'); }
                 function openApiSettings() {
   setActivePage('apiSettingsScreen'); 
