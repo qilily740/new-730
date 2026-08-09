@@ -51,13 +51,18 @@
         async getApps(orderBy = 'created_at', limitN = 50) {
             await _initFirebase();
             const snap = await _db.collection('apps').orderBy(orderBy, 'desc').limit(limitN).get();
-            return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+            let apps = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+            // 屏蔽名字包含"漏洞"或开发者为"htfc786"的应用
+            return apps.filter(app => !(app.name && app.name.includes('漏洞')) && app.author !== 'htfc786');
         },
         async searchApps(keyword) {
             await _initFirebase();
             const snap = await _db.collection('apps').orderBy('created_at', 'desc').limit(200).get();
-            const all  = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-            const kw   = keyword.toLowerCase();
+            let all = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+            // 同样进行屏蔽
+            all = all.filter(app => !(app.name && app.name.includes('漏洞')) && app.author !== 'htfc786');
+            
+            const kw = keyword.toLowerCase();
             return all.filter(a =>
                 (a.name  || '').toLowerCase().includes(kw) ||
                 (a.desc  || '').toLowerCase().includes(kw) ||
